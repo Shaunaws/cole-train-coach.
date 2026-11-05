@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10151b">
+<link rel="manifest" href="manifest.json">
+<title>Cole Train Workout Coach</title>
+<style>
+:root{color-scheme:dark;--bg:#10151b;--panel:#1b242d;--panel2:#222e38;--gold:#f0b323;--green:#55d68b;--muted:#aab6c2;--red:#ff6868}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#273642 0,#10151b 48%);color:#f5f7f9;font:16px system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:760px;margin:auto;padding:18px 15px 40px}.top{display:flex;align-items:center;gap:14px;margin:6px 0 18px}
+.avatar{width:68px;height:68px;border-radius:18px;background:linear-gradient(145deg,#f0b323,#9d4d13);display:grid;place-items:center;font-size:34px;box-shadow:0 8px 28px #0008}
+h1{font-size:22px;line-height:1.1;margin:0}.sub{color:var(--muted);font-size:12px;margin-top:5px;letter-spacing:.08em}
+.pill{display:inline-block;border:1px solid #52616d;border-radius:99px;padding:5px 9px;color:#d7e0e7;font-size:11px;margin-top:7px}
+.card{background:linear-gradient(145deg,#202b35,#182129);border:1px solid #34424e;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 12px 28px #0003}
+h2{font-size:15px;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+.bigline{font-size:21px;font-weight:850;line-height:1.25}.muted{color:var(--muted)}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}
+button,select,input{font:inherit}button{background:var(--gold);color:#161a1e;border:0;border-radius:12px;padding:12px 14px;font-weight:800;cursor:pointer;min-height:46px}button.secondary{background:#33424e;color:#f5f7f9;border:1px solid #50606d}button.green{background:var(--green)}button.danger{background:#512c31;color:#fff;border:1px solid #8a454d}
+button:active{transform:scale(.98)}button:disabled{opacity:.5}
+input,select{background:#111a21;color:#fff;border:1px solid #43515d;border-radius:10px;padding:11px;width:100%;min-width:0}
+label{display:block;color:var(--muted);font-size:12px;margin:9px 0 5px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{background:#111a21;border-radius:12px;padding:12px}.stat strong{display:block;font-size:24px}.stat span{font-size:11px;color:var(--muted)}
+.meter{height:9px;background:#0e151a;border-radius:99px;overflow:hidden;margin:10px 0}.meter i{display:block;height:100%;background:var(--green);width:0;transition:width .25s}
+#coachText{min-height:62px;font-size:18px;font-weight:750;line-height:1.35}.tiny{font-size:11px;color:var(--muted);line-height:1.45}
+#timer{font-size:42px;font-weight:900;text-align:center;font-variant-numeric:tabular-nums;margin:8px}
+.list{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #34424e;font-size:14px}.list:last-child{border:0}
+.pulse{animation:pulse 1.4s infinite}@keyframes pulse{50%{box-shadow:0 0 0 8px #f0b32320,0 0 30px #f0b32340}}
+@media(max-width:440px){.grid{grid-template-columns:1fr 1fr}.top{align-items:flex-start}.bigline{font-size:19px}}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+ <div class="avatar" aria-hidden="true">🏈</div>
+ <div><h1>COLE TRAIN<br>WORKOUT COACH</h1><div class="sub">THRASHBALL TRAINING SYSTEM · BUILD 001</div><span class="pill">LOCAL-FIRST · NO API KEY</span></div>
+</header>
+
+<section class="card">
+ <h2>Coach's locker room</h2>
+ <div id="coachText" aria-live="polite">THE COLE TRAIN HAS ARRIVED! Ready to put in some work, baby?</div>
+ <div class="row" style="margin-top:12px">
+  <button id="speakBtn">🔊 Say it</button><button class="secondary" id="listenBtn">🎙️ Talk to Cole</button>
+ </div>
+ <p class="tiny" id="voiceStatus">Voice uses the speech services available in your browser. Microphone permission may be required.</p>
+</section>
+
+<section class="card">
+ <h2>Choose your coaching mode</h2>
+ <div class="row">
+  <select id="mode">
+   <option value="hype">Hype mode</option><option value="drill">Drill sergeant</option>
+   <option value="trash">Playful trash talk</option><option value="recovery">Recovery mode</option><option value="victory">Victory mode</option>
+  </select>
+  <button class="secondary" id="motivateBtn">Hype me up</button>
+ </div>
+</section>
+
+<section class="card">
+ <h2>Workout control</h2>
+ <label for="exercise">Exercise</label><input id="exercise" value="Push-ups" maxlength="40">
+ <div class="grid">
+  <div><label for="reps">Reps completed</label><input id="reps" type="number" min="1" max="500" value="10"></div>
+  <div><label for="sets">Sets completed</label><input id="sets" type="number" min="1" max="50" value="1"></div>
+ </div>
+ <div class="row" style="margin-top:12px"><button id="logBtn" class="green">Log set</button><button class="secondary" id="startBtn">Start workout</button></div>
+ <div class="row" style="margin-top:9px"><button class="secondary" id="endBtn">Finish workout</button><button class="secondary" id="challengeBtn">Daily challenge</button></div>
+ <p class="tiny">Your log is saved on this device in this browser. It is not synced or backed up.</p>
+</section>
+
+<section class="card">
+ <h2>Rest timer</h2>
+ <div id="timer">01:30</div>
+ <div class="row">
+  <button id="rest60" class="secondary">60 sec</button><button id="rest90" class="secondary">90 sec</button><button id="rest120" class="secondary">2 min</button>
+ </div>
+ <div class="row" style="margin-top:9px"><button id="pauseTimer" class="secondary">Pause</button><button id="stopTimer" class="danger">Stop</button></div>
+</section>
+
+<section class="card">
+ <h2>Training stats</h2>
+ <div class="grid">
+  <div class="stat"><strong id="sessionCount">0</strong><span>WORKOUTS LOGGED</span></div>
+  <div class="stat"><strong id="setCount">0</strong><span>SETS LOGGED</span></div>
+  <div class="stat"><strong id="repCount">0</strong><span>TOTAL REPS</span></div>
+  <div class="stat"><strong id="streakCount">0</strong><span>ACTIVE DAYS</span></div>
+ </div>
+ <div style="margin-top:14px;font-weight:750">Recent training</div><div id="history" class="tiny" style="margin-top:6px">No sets logged yet. Let's change that.</div>
+</section>
+
+<section class="card">
+ <h2>Sound & atmosphere</h2>
+ <div class="row"><button id="musicBtn" class="secondary">▶ Start workout beat</button><button id="sfxBtn" class="secondary">🏁 Victory sound</button></div>
+ <p class="tiny">The beat and sound effects are synthesized locally. They are original tones, not game audio. Keep volume low enough to hear your surroundings.</p>
+</section>
+
+<footer class="tiny">Fan-made workout companion concept. Not affiliated with Microsoft, The Coalition, or the Gears of War franchise. Uses an original Thrashball-inspired coach voice/persona, not a recording or clone of the game's actor.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const KEY='coleTrainWorkoutDataV1';
+let data=JSON.parse(localStorage.getItem(KEY)||'{"sets":[],"sessions":[],"activeStart":null}');
+let timerId=null, remaining=90, paused=false, audioCtx=null, musicOn=false, musicTimer=null;
+const save=()=>localStorage.setItem(KEY,JSON.stringify(data));
+const lines={
+ hype:["WHOOOO! THAT'S WHAT I'M TALKIN' ABOUT, BABY!","ONE MORE CLEAN REP! YOU'VE GOT THIS!","GET IN THE GAME! STRONG FORM, STRONG FINISH!"],
+ drill:["LOCK IN, SOLDIER. CONTROL THE REP. OWN THE MOVEMENT.","NO RUSHING. CLEAN FORM. NOW GET TO WORK.","FOCUS UP. YOU SET THE PACE, NOT YOUR EXCUSES."],
+ trash:["THAT REP WAS SO SLOW I THOUGHT THE CLOCK STOPPED. RESET AND HIT IT CLEAN!","YOU CAN DO BETTER THAN THAT, ROOKIE. SHOW ME THE NEXT ONE!","THE BENCH ISN'T GOING TO LIFT ITSELF, BABY!"],
+ recovery:["BREATHE. SIP SOME WATER. RECOVERY IS PART OF THE WORK.","EASY DOES IT. LET YOUR BODY RESET.","GOOD training includes knowing when to recover."],
+ victory:["THAT'S A WRAP! YOU SHOWED UP AND PUT IN THE WORK!","CHAMPIONSHIP PERFORMANCE! LOG THAT WIN!","THE COLE TRAIN IS ROLLING! THAT'S ANOTHER SESSION IN THE BOOKS!"]
+};
+function say(text){$('coachText').textContent=text; if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.rate=1.02;u.pitch=.82;u.volume=1;speechSynthesis.speak(u)}}
+function randomLine(){let a=lines[$('mode').value];return a[Math.floor(Math.random()*a.length)]}
+$('speakBtn').onclick=()=>say($('coachText').textContent);
+$('motivateBtn').onclick=()=>say(randomLine());
+$('mode').onchange=()=>say(({hype:"HYPE MODE! LET'S BRING THAT ENERGY!",drill:"DRILL SERGEANT MODE. FORM FIRST. WORK SECOND. NO SHORTCUTS.",trash:"TRASH TALK MODE. KEEP IT PLAYFUL, KEEP IT MOVING.",recovery:"RECOVERY MODE. SMART TRAINING WINS THE LONG GAME.",victory:"VICTORY MODE! YOU EARNED THIS MOMENT!"})[$('mode').value]);
+function refresh(){
+ $('sessionCount').textContent=data.sessions.length;
+ $('setCount').textContent=data.sets.length;
+ $('repCount').textContent=data.sets.reduce((n,s)=>n+s.reps,0);
+ const days=new Set(data.sessions.map(s=>s.date));$('streakCount').textContent=days.size;
+ $('history').innerHTML=data.sets.slice(-5).reverse().map(s=>`<div class="list"><span>${escapeHtml(s.exercise)} · ${s.reps} reps × ${s.sets} sets</span><span>${s.date}</span></div>`).join('')||'No sets logged yet. Let’s change that.';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('startBtn').onclick=()=>{if(!data.activeStart){data.activeStart=Date.now();save()}say("THE COLE TRAIN HAS ARRIVED! WORKOUT IS LIVE! LET'S GET THIS WORK!");};
+$('logBtn').onclick=()=>{
+ const exercise=$('exercise').value.trim()||'Exercise',reps=Math.max(1,Math.min(500,Number($('reps').value)||1)),sets=Math.max(1,Math.min(50,Number($('sets').value)||1));
+ data.sets.push({exercise,reps,sets,date:new Date().toLocaleDateString()});
+ if(!data.activeStart)data.activeStart=Date.now();save();refresh();say(`YOU LOGGED ${reps} REPS FOR ${sets} SETS OF ${exercise.toUpperCase()}! THAT'S WORK, BABY!`);
+};
+$('endBtn').onclick=()=>{if(!data.activeStart){say("NO ACTIVE WORKOUT TO FINISH. HIT START WHEN YOU'RE READY!");return}data.sessions.push({start:data.activeStart,end:Date.now(),date:new Date().toLocaleDateString()});data.activeStart=null;save();refresh();say(randomLine()+" WORKOUT COMPLETE!");};
+function renderTimer(){let m=Math.floor(remaining/60),s=remaining%60;$('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function startTimer(sec){clearInterval(timerId);remaining=sec;paused=false;renderTimer();timerId=setInterval(()=>{if(paused)return;remaining--;renderTimer();if(remaining<=0){clearInterval(timerId);timerId=null;beep(660,.18);setTimeout(()=>beep(880,.25),220);say("REST TIME IS OVER! BACK IN THE GAME, BABY!")}},1000);say(`REST PERIOD! ${sec} SECONDS. CATCH YOUR BREATH!`)}
+$('rest60').onclick=()=>startTimer(60);$('rest90').onclick=()=>startTimer(90);$('rest120').onclick=()=>startTimer(120);
+$('pauseTimer').onclick=()=>{paused=!paused;$('pauseTimer').textContent=paused?'Resume':'Pause'};
+$('stopTimer').onclick=()=>{clearInterval(timerId);timerId=null;remaining=0;renderTimer()};
+$('challengeBtn').onclick=()=>{const challenges=[["Push-up ladder","Complete 3 comfortable sets of 6–10 push-ups, resting 60–90 seconds."],["Leg day starter","Complete 3 sets of 8 bodyweight squats with controlled form."],["Core control","Complete 3 sets of 20-second planks. Stop if your form breaks."],["Walk it out","Take a brisk 15–20 minute walk at a pace where you can still talk."]];let c=challenges[new Date().getDate()%challenges.length];say(`TODAY'S CHALLENGE: ${c[0]}! ${c[1]}`)};
+function getCtx(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function beep(freq,dur){try{let c=getCtx(),o=c.createOscillator(),g=c.createGain();o.frequency.value=freq;o.type='triangle';g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.08,c.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+dur)}catch(e){}}
+$('sfxBtn').onclick=()=>{[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.18),i*130))};
+$('musicBtn').onclick=()=>{if(musicOn){clearInterval(musicTimer);musicOn=false;$('musicBtn').textContent='▶ Start workout beat';return}musicOn=true;$('musicBtn').textContent='⏸ Stop workout beat';let notes=[110,146.8,164.8,146.8],i=0;musicTimer=setInterval(()=>{try{let c=getCtx(),o=c.createOscillator(),g=c.createGain();o.type='sawtooth';o.frequency.value=notes[i++%notes.length];g.gain.value=.025;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.16)}catch(e){}},260)};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SR){const rec=new SR();rec.lang='en-US';rec.continuous=false;rec.interimResults=false;rec.onstart=()=>$('voiceStatus').textContent='Listening. Say a command.';rec.onerror=e=>$('voiceStatus').textContent='Voice input issue: '+e.error+'. You can still use the buttons.';rec.onend=()=>$('voiceStatus').textContent='Voice ready when your browser supports microphone recognition.';rec.onresult=e=>handleCommand(e.results[0][0].transcript);$('listenBtn').onclick=()=>{try{rec.start()}catch(e){$('voiceStatus').textContent='Microphone is already active.'}}}
+else{$('listenBtn').disabled=true;$('voiceStatus').textContent='Speech recognition is not supported in this browser. Buttons and spoken coach output may still work.'}
+function handleCommand(raw){let t=raw.toLowerCase();$('voiceStatus').textContent='Heard: '+raw;
+ if(t.includes('motivate')||t.includes('hype'))say(randomLine());
+ else if(t.includes('start workout'))$('startBtn').click();
+ else if(t.includes('end workout')||t.includes('finish workout'))$('endBtn').click();
+ else if(t.includes('challenge'))$('challengeBtn').click();
+ else if(t.includes('60 second'))startTimer(60);
+ else if(t.includes('90 second'))startTimer(90);
+ else if(t.includes('2 minute')||t.includes('two minute'))startTimer(120);
+ else if(t.includes('log'))say("Use the reps and sets boxes, then hit LOG SET. I want accurate numbers, baby!");
+ else if(t.includes('recovery')){$('mode').value='recovery';$('mode').dispatchEvent(new Event('change'))}
+ else say("I heard you, baby. Try: start workout, daily challenge, motivate me, or give me 90 seconds.");
+}
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+refresh();renderTimer();
+</script>
+</body></html>

@@ -1,0 +1,9 @@
+{
+  "name": "Cole Train Workout Coach",
+  "short_name": "Cole Train",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#10151b",
+  "theme_color": "#10151b",
+  "description": "A local-first Thrashball-inspired workout coach."
+}
